@@ -1,0 +1,11 @@
+GET http://localhost:18080/ping
+
+
+####
+
+GET http://localhost:18080/users
+
+####
+
+GET http://localhost:18080/user/test
+
