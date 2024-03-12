@@ -32,3 +32,9 @@ func (c *AuthController) Login(ctx *gin.Context) {
 func (c *AuthController) Logout(ctx *gin.Context) {
 
 }
+
+func NewAuthController(db *gorm.DB) *AuthController {
+	return &AuthController{
+		db,
+	}
+}

@@ -19,7 +19,7 @@ func (e *Route) Register(r *gin.Engine) {
 	r.GET("/users/:id", e.app.GetUser)
 	r.POST("/auth/login", e.auth.Login)
 	r.POST("/auth/logout", e.auth.Logout)
-	r.GET("/users/:id", e.app.GetUser)
+	//r.GET("/users/:id", e.app.GetUser)
 
 	// Authorized group (uses gin.BasicAuth() middleware)
 	// Same than:

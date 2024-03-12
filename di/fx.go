@@ -4,15 +4,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/glebarez/sqlite"
 	log "github.com/sirupsen/logrus"
+	"go-demo/commands"
+	"go-demo/common"
 	"go-demo/module/route"
-	"go.uber.org/config"
 	"go.uber.org/fx"
-	gorm "gorm.io/gorm"
-	"os"
+	"gorm.io/gorm"
 )
 
 var Module = fx.Module("di",
 	fx.Provide(
+		common.NewConfig,
 		NewGorm,
 		NewLogger,
 		fx.Annotate(
@@ -20,12 +21,20 @@ var Module = fx.Module("di",
 			fx.ParamTags(`group:"routes"`),
 		),
 		fx.Annotate(
-			NewConfigProvider,
-			fx.ParamTags(`name:"config"`),
+			commands.NewCommandApplication,
+			fx.ParamTags(`group:"commands"`),
+		),
+
+		fx.Annotate(
+			commands.NewServeCommand,
+			fx.ResultTags(`group:"commands"`),
+		),
+		fx.Annotate(
+			commands.NewTestCommand,
+			fx.ResultTags(`group:"commands"`),
 		),
 	),
 )
-
 
 func NewLogger() *log.Logger {
 	logger := log.New()
@@ -34,9 +43,9 @@ func NewLogger() *log.Logger {
 	return logger
 }
 
-func NewGorm(conf *config.YAML) *gorm.DB {
+func NewGorm(conf *common.Config) *gorm.DB {
 
-	dsn := conf.Get("db").String()
+	dsn := conf.Db.Dsn
 	db, err := gorm.Open(sqlite.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database: " + dsn + "\n" + err.Error())
@@ -55,17 +64,4 @@ func NewHttpServer(routes []route.Route) *gin.Engine {
 	}
 
 	return r
-}
-
-func NewConfigProvider(file string) *config.YAML {
-	_, err := os.Stat(file)
-	if err != nil {
-		panic(err) // handle error
-	}
-	provider, err := config.NewYAML(config.File(file))
-	if err != nil {
-		panic(err) // handle error
-	}
-
-	return provider
 }

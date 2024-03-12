@@ -10,6 +10,7 @@ import (
 var Module = fx.Module("app",
 	fx.Provide(
 		controller.NewAppController,
+		controller.NewAuthController,
 		route.AsRoute(router.NewAppRoute),
 	),
 )
