@@ -2,9 +2,11 @@ package common
 
 type Config struct {
 	Db struct {
-		Dsn string
+		Driver string
+		Dsn    string
 	}
-	Http *http
+	Http  http
+	Debug bool
 }
 
 type http struct {
@@ -13,7 +15,7 @@ type http struct {
 
 func NewConfig() *Config {
 	return &Config{
-		Http: &http{
+		Http: http{
 			Addr: ":18080",
 		},
 	}
