@@ -1,4 +1,4 @@
 db:
   #  dsn: data/app.db
-  dsn: mysql://root@localhost/project3
+  dsn: mysql://root@localhost/project3?charset=utf8&parseTime=True
   driver: mysql

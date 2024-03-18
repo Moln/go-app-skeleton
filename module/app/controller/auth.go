@@ -30,7 +30,8 @@ func (c *AuthController) Login(ctx *gin.Context) {
 
 	if db.Error != nil {
 		if errors.Is(db.Error, gorm.ErrRecordNotFound) {
-
+			response.Error(ctx, "账号错误")
+			return
 		} else {
 			ctx.Error(db.Error)
 			return

@@ -8,9 +8,9 @@ import (
 var UserTable = "users"
 
 type User struct {
-	Id        uint `gorm:"primarykey"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Id        uint      `gorm:"primarykey"`
+	CreatedAt time.Time `gorm:"type:datetime"`
+	UpdatedAt time.Time `gorm:"type:datetime"`
 	Username  string
 	Email     string
 	Password  string `json:"-"`
