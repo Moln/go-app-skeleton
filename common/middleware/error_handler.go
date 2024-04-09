@@ -4,12 +4,29 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-demo/common"
 	"net/http"
+	"runtime/debug"
 )
 
 func NewErrorHandler(cfg *common.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Next()
+		defer func() {
+			if err := recover(); err != nil {
+				debug.PrintStack()
+				if str, ok := err.(string); ok {
+					c.JSON(http.StatusInternalServerError, gin.H{
+						"code":    http.StatusInternalServerError,
+						"message": str,
+					})
+					return
+				}
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"code":    http.StatusInternalServerError,
+					"message": "Server error",
+				})
+			}
+		}()
 
+		c.Next()
 		lastErr := c.Errors.Last()
 		if lastErr == nil {
 			return

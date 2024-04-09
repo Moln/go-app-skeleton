@@ -15,6 +15,9 @@ func (e *Route) Register(r *gin.Engine) {
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
 	})
+	r.GET("/error", func(c *gin.Context) {
+		panic("error status")
+	})
 	r.GET("/users", e.app.GetUsers)
 	r.GET("/users/:id", e.app.GetUser)
 	r.POST("/auth/login", e.auth.Login)

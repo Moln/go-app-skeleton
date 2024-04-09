@@ -1,3 +1,4 @@
+### Ping
 GET http://localhost:18080/ping
 
 
@@ -12,4 +13,6 @@ Content-Type: application/json
 
 {"username":"test", "password":"123123"}
 
-###
+### Test error
+
+GET http://localhost:18080/error
